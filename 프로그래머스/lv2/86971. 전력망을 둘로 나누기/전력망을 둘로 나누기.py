@@ -1,45 +1,51 @@
-# 아이디어 : bfs + visited를 사용하여 중간 줄을 끊기
-#          1. bfs 함수 설계 + visited 테이블
-#          2. 특정 노드를 visited[True]로 처리하여 연결 끊기
-# 알고리즘 : 그래프 탐색(bfs) + 브루트 포스
-#           wires 비교: O(n^2) = 10000
-# 자료구조 : queue(deque) 사용
+# 아이디어 : union-find를 사용하여 중간 줄을 끊기
+#          1. union-find 함수 설계 + parent 테이블
+#          2. 특정 wires 리스트의 원소를 무시
+#          3. parent 테이블을 Counter 클래스로 카운트
 
-from collections import deque
+# 알고리즘 : union-find + 브루트 포스
+#           wires 비교: O(n^2) = 10000
+# 자료구조 : union-find, Counter 
+
+from collections import Counter
 
 def solution(n, wires):
     answer = []
     
-    # 그래프 초기화
-    graph = [[] for _ in range(n + 1)]
-    for a, b in wires :
-        # 양방향
-        graph[a].append(b)
-        graph[b].append(a)
+    for i in range(n-1) :
+        # parent 테이블 초기화
+        parent = [x for x in range(n + 1)]
+        for j in range(n-1) :
+            # 끊을 노드에 해당하면 무시
+            if i == j :
+                continue
+            a, b = wires[j]
+            union_parent(parent, a, b) # union 연산 수행
         
-    def bfs(start) :
-        # queue 및 start 정의
-        queue = deque()
-        queue.append(start)
-        visited[start] = True
-        cnt = 1 # 전선이 연결된 개수
+        # 직접 find 연산을 위한 new_parent 테이블 생성
+        new_parent = []
+        for i in range(1, n + 1) :
+            new_parent.append(find_parent(parent, i))
         
-        # queue가 빌 때까지
-        while queue :
-            v = queue.popleft()
-            for i in graph[v] :
-                if not visited[i] :
-                    visited[i] = True
-                    queue.append(i)
-                    cnt += 1
-        
-        return cnt
+        # Counter를 이용하여 갯수세기
+        counter = Counter(new_parent)
+        counter = list(counter.values())
+        answer.append(abs(counter[0] - counter[1]))
     
-    for start, not_visit in wires :
-        visited = [False] * (n + 1)
-        visited[not_visit] = True # 방문한 것으로 처리
-        cnt = bfs(start)
-        # 두 그룹의 전력망의 차이를 리스트에 append
-        answer.append(abs((n-cnt) - cnt))
-        
     return min(answer)
+
+# find 연산 정의 (경로압축)
+def find_parent(parent, x) :
+    if parent[x] != x :
+        parent[x] = find_parent(parent, parent[x])
+    return parent[x]
+
+# union 연산 정의
+def union_parent(parent, a, b) :
+    a = find_parent(parent, a)
+    b = find_parent(parent, b)
+    
+    if a < b :
+        parent[b] = a
+    else :
+        parent[a] = b
