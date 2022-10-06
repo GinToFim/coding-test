@@ -1,14 +1,3 @@
-# 아이디어 : 완전 탐색으로 2 x 2-4개가 모두 동일하다면 인덱스를 기억해놓고 없애기
-#           1. (x, y) - (x+1, y), (x, y+1), (x+1, y+1) 이 동일하다면 인덱스를 따로 기억
-#           2. 바로 없앤다면 어떤 경우에는 못 찾을수도
-#           3. 없앰 = 'X' 문자로 변경 
-#           4. flag로 없앨 수 있는 블록이 있는지 없는지 비교 
-#              만약 없다면 점수 return
-# 알고리즘 : 브루트 포스 - O(n^3) = 30^3 = 27000
-# 자료구조 
-
-# m행 n열
-
 def solution(m, n, board):
     answer = 0
     # board str to list
@@ -73,4 +62,3 @@ def chagePlace(m, n, board) :
             board[x][y] = tmp_board[x]
     
     return board
-    
