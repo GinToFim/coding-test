@@ -1,15 +1,3 @@
-# 아이디어 : 
-# for record in records
-# record = 시각, 차량번호, 내역
-# if IN + 차량번호 not in dict
-# key- 차랑번호 value - 0 가격 추가 + 스택에 차량번호 시간 추가
-
-# if IN + 차량번호 in dict
-# 가격 추가
-
-# 알고리즘 : 구현
-# 자료구조 : 출력때문에 단순 리스트 사용(index 메소드 사용) + 스택 사용
-
 import math
 
 def solution(fees, records):
