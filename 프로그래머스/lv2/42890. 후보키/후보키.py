@@ -1,30 +1,36 @@
+# 아이디어 :  1. combinations를 사용하여 컬럼에 대한 조합확인하기
+#           2. set 자료형을 이용하여 유일성 체크 (row에 대한 길이와 비교)
+#           3. issubset을 사용하여 최소성 체크
+# 알고리즘
+# 자료구조 : 중복(유일성, 최소성) 체크 -> set
+
 from itertools import combinations
 
 def solution(relation):
-    answer = 0
-    
-    row = len(relation)
+    row = len(relation) 
     col = len(relation[0])
-
-    #가능한 속성의 모든 인덱스 조합 
-    combi_list = []
-    for i in range(1, col+1):
-        combi_list.extend(combinations(range(col), i))
     
-    # 유일성
-    unique = []
-    for combi in combi_list : 
-        tmp = [tuple([item[x] for x in combi]) for item in relation]
-        if len(set(tmp)) == row : # 유일성 체크
-            check = True
+    combi_list = []
+    
+    for r in range(1, col + 1) :
+        for combi in combinations(range(col), r) :
+            combi_list.append(tuple(combi))
             
-            # unique가 비어있으면 자동으로 통과
-            for x in unique : 
-                if set(x).issubset(set(combi)) : # 최소성 체크
-                    check = False
-                    break
-            
-            if check :
-                unique.append(combi)
+    candidate = [] # 후보키
+    
+    for combi in combi_list :
+        # 유일성 체크
+        tmp = [tuple(item[x] for x in combi) for item in relation]
+        if len(set(tmp)) != row : # 개수가 다르다면 
+            continue
         
-    return len(unique)
+        check = True
+        for x in candidate :
+            if set(x).issubset(set(combi)) :
+                check = False
+                break
+        
+        if check :
+            candidate.append(combi)
+        
+    return len(candidate)
