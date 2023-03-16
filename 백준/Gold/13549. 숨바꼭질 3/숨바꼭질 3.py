@@ -1,25 +1,39 @@
+# 알고리즘 : BFS
+# 자료구조 : queue(deque)
+
 from collections import deque
+MAX = 100001
 
-n, k = map(int, input().split())  # n: 수빈이가 있는 위치, k: 동생이 있는 위치
-q = deque()
-q.append(n) 
-visited = [-1 for _ in range(100001)]
-visited[n] = 0
+n, k = map(int, input().split())
+point = [-1] * MAX 
 
-while q:
-    s = q.popleft()
-    if s == k:
-        print(visited[s])
-        break
+def bfs(start) :
+    # 시작노드 및 큐 정의
+    queue = deque()
+    queue.append(start)
+    point[start] = 0
+    
+    # 큐가 빌 때까지
+    while queue :
+        v = queue.popleft()
         
-    if 0 <= s-1 < 100001 and visited[s-1] == -1:
-        visited[s-1] = visited[s] + 1
-        q.append(s-1)
+        # 원하는 곳에 도착했다면 return
+        if v == k :
+            return point[v]
         
-    if 0 < s*2 < 100001 and visited[s*2] == -1:
-        visited[s*2] = visited[s]
-        q.append(s*2)  # 2*s 가 다른 연산보다 더 높은 우선순위를 가지기 위함
+        # v-1이 범위에 해당하고 방문하지 않았다면
+        if 0 <= v - 1 < MAX and point[v - 1] == -1 :
+            point[v - 1] = point[v] + 1
+            queue.append(v - 1)
         
-    if 0 <= s+1 < 100001 and visited[s+1] == -1:
-        visited[s+1] = visited[s] + 1
-        q.append(s+1)
+        # v*2이 범위에 해당하고 방문하지 않았다면
+        if 0<= v * 2 < MAX and point[v * 2] == -1 :
+            point[v * 2] = point[v]
+            queue.append(v * 2)
+        
+        # v+1이 범위에 해당하고 방문하지 않았다면
+        if 0 <= v + 1 < MAX and point[v + 1] == -1 :
+            point[v + 1] = point[v] + 1
+            queue.append(v + 1)
+        
+print(bfs(n))
