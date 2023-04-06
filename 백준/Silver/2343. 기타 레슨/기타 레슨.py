@@ -8,7 +8,7 @@ input = sys.stdin.readline
 n, m = map(int, input().split())
 data = list(map(int, input().split()))
 
-start, end = 0, 10**10
+start, end = 0, sum(data)
 result = sum(data)
 
 while start <= end :
