@@ -49,3 +49,6 @@ def union_parent(parent, a, b) :
         parent[b] = a
     else :
         parent[a] = b
+
+
+# 메모리: 10.3 MB, 시간: 12.78 ms
