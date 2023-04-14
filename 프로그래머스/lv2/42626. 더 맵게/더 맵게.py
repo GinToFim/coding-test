@@ -1,22 +1,26 @@
+# 아이디어 : 가장 낮은 2개의 수를 뽑기, 하지만 min을 사용하면 시간복잡도 X
+# 자료구조 : heap(heapq) 사용
+
 import heapq
 
 def solution(scoville, K):
     answer = 0
     
-    # list를 heapq로 변경
-    heapq.heapify(scoville) 
+    # heap으로 변환
+    heapq.heapify(scoville)
     
-    while scoville :
+    while True :
         first = heapq.heappop(scoville)
-
-        # 만약에 첫 번째 원소가 K보다 크다면 return
+        
         if first >= K :
             return answer
+        
         if len(scoville) <= 0 :
-            return -1
+            break
+        
         second = heapq.heappop(scoville)
-        heapq.heappush(scoville, first + second * 2)
+        val = first + second * 2
+        heapq.heappush(scoville, val)
         answer += 1
     
-
-    return answer
+    return -1
