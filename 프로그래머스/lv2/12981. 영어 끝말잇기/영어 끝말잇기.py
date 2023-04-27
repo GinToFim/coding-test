@@ -1,37 +1,31 @@
-# 아이디어 : 
-# 1. 앞서 나온 단어를 기억하고 있어야 함 -> dict 저장
-# 2. 단어의 맨 앞과 맨 끝을 비교 (끝말잇기)
-# 3. n번 사람(num), n번 차례(times)
+# 아이디어 : 1. 지금까지 나왔던 단어들은 set에 추가
+#           2. 현재 끝말잇기 순서를 세기 (cnt = 0 부터 시작)
+#           3. 이전 단어의 맨 뒤와 현재 단어 앞이 다르다면 return
+#           4. 끝까지 가면 [0, 0]
 
-# 알고리즘 : 최대 O(n^2) => 10000 
-# 자료구조 : 해시-맵 사용
+
+# [번호, 차례] return
+# 알고리즘 : 구현
 
 def solution(n, words):
     answer = []
-
-    # 모든 단어 False로 초기화
-    check = dict()
-    for word in words :
-        check[word] = False
+    word_set = set()
+    cnt = 0 # 끝말잇기 개수
     
-    # 첫 번째 단어는 바로 실행
-    turn = 0
-    check[words[0]] = True
+    past_word = words[0]
+    word_set.add(words[0])
+    cnt += 1
     
-    for i in range(1, len(words)) :    
-        # 끝말잇기가 틀렸다면
-        if words[i][0] != words[i-1][-1] :
-            turn = i
-            return [turn%n + 1, turn//n + 1]
+    for word in words[1:] :
+        # 만약 말했던 단어 이거나 끝말잇기가 불가능하다면
+        if word in word_set or past_word[-1] != word[0] :
+            return [cnt%n + 1, cnt//n+1]
         
-        # 이미 썻던 단어라면 
-        if check[words[i]] == True :
-            turn = i
-            return [turn%n + 1, turn//n + 1]
+        # 가능하다면
+        past_word = word
+        word_set.add(word)
         
-        # 통과한 단어 체크 표시
-        check[words[i]] = True
-        
-    # for문을 탈출했다면(주어진 단어로 끝말잇기가 끝났다면)
+        cnt += 1
+    
+    # 모두 끝말잇기가 가능하다면
     return [0, 0]
-    
