@@ -1,10 +1,10 @@
-// 아이디어 : graph, 상하좌우(dx, dy) 정의
-// 알고리즘 : BFS
-// 자료구조 : queue
+/* 
+아이디어 : 
+알고리즘 : BFS (graph, dx/dy, queue)
+자료구조 : queue
+*/
 
-#include <iostream>
-#include <queue>
-#include <utility>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -32,27 +32,25 @@ void BFS(int x, int y) {
             // 범위 밖이라면 무시
             if (nx < 0 || ny < 0 || nx >= n || ny >= m) 
                 continue;
-            
+
+            // 해당 지점에 배추가 있다면
             if (graph[nx][ny] == 1) {
                 graph[nx][ny] = 0;
                 q.push({nx, ny});
             }
         }
-
     }
-
 }
+
 
 int main(void) {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    cin.tie(NULL); cout.tie(NULL);
 
     cin >> T;
 
-    while (T--) {
+    while(T--) {
         cin >> m >> n >> k;
-
         graph[51][51] = {0, }; // 그래프 초기화
 
         for (int i = 0; i < k; i++) {
@@ -60,6 +58,7 @@ int main(void) {
             cin >> y >> x;
             graph[x][y] = 1;
         }
+
 
         int result = 0;
 
@@ -73,5 +72,6 @@ int main(void) {
         }
         cout << result << '\n';
     }
+    
     return 0;
 }
