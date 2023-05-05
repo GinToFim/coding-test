@@ -1,14 +1,13 @@
--- 코드를 입력하세요
-SELECT member_name, review_text,
-       DATE_FORMAT(review_date, '%Y-%m-%d') AS review_date
-  FROM member_profile AS pf
- INNER JOIN rest_review AS rv
-    ON pf.member_id = rv.member_id
- WHERE pf.member_id = (
-     SELECT member_id
-       FROM rest_review
-      GROUP BY member_id
-      ORDER BY COUNT(*) DESC
-      LIMIT 1)
- ORDER BY 3 ASC, 2 ASC;
-
+SELECT B.MEMBER_NAME, A.REVIEW_TEXT, 
+       DATE_FORMAT(A.REVIEW_DATE, '%Y-%m-%d')
+FROM REST_REVIEW A
+JOIN (
+    SELECT R.MEMBER_ID, M.MEMBER_NAME, RANK() OVER(ORDER BY CNT DESC) AS RANKING
+    FROM (
+        SELECT *, COUNT(MEMBER_ID) AS CNT
+        FROM REST_REVIEW
+        GROUP BY MEMBER_ID) AS R
+    JOIN MEMBER_PROFILE M ON R.MEMBER_ID = M.MEMBER_ID) B
+ON A.MEMBER_ID = B.MEMBER_ID
+WHERE B.RANKING = 1
+ORDER BY A.REVIEW_DATE;
