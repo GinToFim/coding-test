@@ -1,14 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <algorithm>
-#include <cstring>
+#include <bits/stdc++.h>
+
+#define INF 1e9
+#define MAX 801
+
 using namespace std;
-const int INF = 987654321;
+
 int N, E, v1, v2, res = INF;
 int sToV1, sToV2, V1ToV2, V1ToN, V2ToN;
-vector<pair<int, int>> v[801]; // v[a] = (b,c) : a에서 b까지 c의 거리로 이동 가능
-int dist[801];
+vector<pair<int, int> > v[MAX]; // v[a] = (b,c) : a에서 b까지 c의 거리로 이동 가능
+int dist[MAX];
 
 void dijk(int start)
 {
