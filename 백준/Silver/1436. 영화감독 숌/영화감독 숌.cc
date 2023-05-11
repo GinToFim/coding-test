@@ -15,14 +15,14 @@ int main(void) {
 	
 	cin >> n;
 	
-	int num = 0;
+	int num = 665;
 	int cnt = 0;
 	
 	while (cnt < n) {
 		num++;
 		int tmp = num;
 		
-		while (tmp > 0) {
+		while (tmp >= 666) {
 			if (tmp % 1000 == 666) {
 				cnt++;
 				break;
