@@ -1,33 +1,43 @@
-n = int(input())
-ine_sing = list(map(str,input().split()))
+# 아이디어
+# 알고리즘 : brute force, permutations
+# 자료구조 : stack
 
-visited = [0]*10
-max_ans =""
-min_ans =""
+import sys
+input = sys.stdin.readline
 
-def check(i,j,k):
-    if k=='<':
-        return i<j
+k = int(input())
+signs = list(input().split())
+
+visited = [0 for _ in range(10)]
+max_val = ""
+min_val = ""
+
+def check(x, y, sign):
+    if sign == '<':
+        return x < y
     else:
-        return i>j
+        return x > y
 
-def solve(idx,s):
-    global max_ans,min_ans
-
-    if(idx==n+1):
-        if(len(min_ans)==0):
-            min_ans = s
-        else:
-            max_ans = s
+def dfs(depth, s) :
+    global max_val, min_val
+    
+    if depth == k + 1:
+        # 맨 처음 생성된 값은 최솟값
+        if len(min_val) <= 0 :
+            min_val = s
+        # 그 이후로는 계속 대입, 최대값
+        else :
+            max_val = s
+        
         return
+    
     for i in range(10):
-        if(visited[i]==0):
-            if(idx==0 or check(s[-1],str(i),ine_sing[idx-1])):
-                visited[i]=True
-                solve(idx+1,s+str(i))
-                visited[i]=False
-
-
-solve(0,"")
-print(max_ans)
-print(min_ans)
+        if not visited[i]:
+            if depth == 0 or check(int(s[-1]), i, signs[depth-1]):
+                visited[i] = True
+                dfs(depth+1, s+str(i))
+                visited[i] = False
+                
+dfs(0, "")
+print(max_val)
+print(min_val)
