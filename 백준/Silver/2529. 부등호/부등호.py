@@ -1,40 +1,33 @@
-# 아이디어
-# 알고리즘 : permutation (순열)
-
-
-from itertools import permutations
-import sys
-input = sys.stdin.readline
-
 n = int(input())
-inequals = list(input().split())
+ine_sing = list(map(str,input().split()))
 
-result = []
+visited = [0]*10
+max_ans =""
+min_ans =""
 
-for nums in permutations(range(10), n + 1) :
-    past = nums[0]
-    flag = True
-    
-    for inequal, num in zip(inequals, nums[1:]) :
-        if inequal == '<' :
-            if not (past < num) :
-                flag = False
-                break
-        else :
-            if not (past > num):
-                flag = False
-                break
-                
-        past = num
-        
-    if flag :
-        result.append(nums)
+def check(i,j,k):
+    if k=='<':
+        return i<j
+    else:
+        return i>j
 
-min_num = result[0]
-max_num = result[-1]
+def solve(idx,s):
+    global max_ans,min_ans
 
-min_num = [str(x) for x in min_num]
-max_num = [str(x) for x in max_num]
+    if(idx==n+1):
+        if(len(min_ans)==0):
+            min_ans = s
+        else:
+            max_ans = s
+        return
+    for i in range(10):
+        if(visited[i]==0):
+            if(idx==0 or check(s[-1],str(i),ine_sing[idx-1])):
+                visited[i]=True
+                solve(idx+1,s+str(i))
+                visited[i]=False
 
-print(''.join(max_num))
-print(''.join(min_num))
+
+solve(0,"")
+print(max_ans)
+print(min_ans)
