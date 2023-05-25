@@ -1,5 +1,5 @@
-# 아이디어 : 1. result 테이블 초기화
-# 알고리즘 LIS - Bianry Search
+# 아이디어
+# 알고리즘 : LIS - 이진 탐색
 
 import bisect
 import sys
@@ -8,15 +8,13 @@ input = sys.stdin.readline
 n = int(input())
 data = list(map(int, input().split()))
 
-result = [data[0]]
+dp = [data[0]]
 
-for x in data[1:] :
-    # 더 크다면(증가하는 수열이 가능하다면)
-    if result[-1] < x :
-        result.append(x)
-    # 더 작다면
+for x in data[1:]:
+    if x > dp[-1]:
+        dp.append(x)
     else :
-        idx = bisect.bisect_left(result, x)
-        result[idx] = x # 해당 인덱스 자리를 현재값으로 바꾸기
+        idx = bisect.bisect_left(dp, x)
+        dp[idx] = x
         
-print(len(result))
+print(len(dp))
