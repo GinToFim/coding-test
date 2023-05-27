@@ -1,4 +1,3 @@
-# 아이디어 : 
 # 알고리즘 : LIS - Binary Search
 
 import bisect
@@ -17,7 +16,7 @@ for x in data[1:]:
         dp.append(x)
         tracking.append((LIS_length, x))
         LIS_length += 1
-    else :
+    else:
         idx = bisect.bisect_left(dp, x)
         dp[idx] = x
         tracking.append((idx, x))
