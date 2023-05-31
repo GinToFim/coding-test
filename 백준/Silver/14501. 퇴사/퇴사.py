@@ -1,4 +1,4 @@
-# 아이디어 : 마지막 날에서부터 첫째 날까지 확인
+# 아이디어 : 
 # 알고리즘 : dp
 
 import sys
@@ -14,11 +14,12 @@ for _ in range(n):
     prices.append(p)
     
 dp = [0 for _ in range(n + 1)]
-    
+
 for i in range(n-1, -1, -1):
-    # 기한 내에 충분하다면
-    if times[i] + i <= n :
+    # 상담진행이 가능하다면
+    if i + times[i] <= n :
         dp[i] = max(prices[i] + dp[i + times[i]], dp[i+1])
+    # 상담진행이 불가능하다면
     else :
         dp[i] = dp[i+1]
         
