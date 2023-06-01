@@ -1,26 +1,37 @@
-# 아이디어 : path (문자열)을 활용하여 이전 길 담기
-# 알고리즘 : dp 
+# 아이디어
+# 알고리즘 : BFS
+# 자료구조 : queue(deque)
+
+from collections import deque
 
 n = int(input())
-dp = [0 for _ in range(n + 1)]
-path = ["" for _ in range(n + 1)]
-path[1] = "1"
 
-for i in range(2, n + 1):
-    dp[i] = dp[i-1] + 1
-    past = i - 1
+# 시작노드 및 큐 정의
+queue = deque()
+queue.append((n, [n]))
+visited = [False for _ in range(n + 1)]
+
+# 큐가 빌 때까지
+while queue:
+    v, path = queue.popleft()
     
-    # 3으로 나눌 수 있으면서 3으로 나누는 것이 더 적을 때
-    if i % 3 == 0 and dp[i//3] + 1 < dp[i]:
-        dp[i] = dp[i//3] + 1
-        past = i // 3
+    # 1에 도착하였다면
+    if v == 1 :
+        print(len(path) - 1)
+        print(*path)
+        break
     
-    # 2로 나눌 수 있으면서 2로 나누는 것이 더 적을 때
-    if i % 2 == 0 and dp[i//2] + 1 < dp[i]:
-        dp[i] = dp[i//2] + 1
-        past = i // 2
+    # 한 번도 방문한 적이 없다면
+    if not visited[v]:
+        visited[v] = True
         
-    path[i] = str(i) + " " + path[past]
-
-print(dp[n])
-print(path[n])
+        # 3으로 나눌 수 있다면
+        if v % 3 == 0:
+            queue.append((v // 3, path + [v//3]))
+        
+        # 2로 나눌 수 있다면
+        if v % 2 == 0 :
+            queue.append((v // 2, path + [v//2]))
+        
+        # 1로 빼는 것도 추가
+        queue.append((v - 1, path + [v - 1]))
