@@ -1,6 +1,16 @@
-from itertools import combinations_with_replacement
-
 n, m = map(int, input().split())
 
-for iters in combinations_with_replacement(range(1, n + 1), m) :
-    print(*iters)
+result = []
+
+def dfs(num, start):
+    # 종료 조건
+    if num == m :
+        print(*result)
+        return
+    
+    for i in range(start, n + 1):
+        result.append(i)
+        dfs(num + 1, i)
+        result.pop()
+        
+dfs(0, 1)
