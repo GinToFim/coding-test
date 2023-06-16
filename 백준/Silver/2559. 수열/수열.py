@@ -1,5 +1,5 @@
-# 아이디어 : right - left = k + 1
-# 알고리즘 : prefix sum
+# 아이디어 : k 길이의 윈도우를 슬라이딩
+# 알고리즘 : 슬라이딩 윈도우
 
 import sys
 input = sys.stdin.readline
@@ -7,17 +7,12 @@ input = sys.stdin.readline
 n, k = map(int, input().split())
 data = list(map(int, input().split()))
 
-sum_value = 0
-dp = [0]
+window = sum(data[:k])
+result = window
 
-for x in data :
-    sum_value += x
-    dp.append(sum_value)
+for i in range(k, n):
+    window += data[i]
+    window -= data[i-k]
+    result = max(result, window)
     
-result = -1e9
-
-for i in range(n - k + 1):
-    num = dp[i + k] - dp[i]
-    result = max(result, num)
-
 print(result)
