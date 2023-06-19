@@ -1,8 +1,7 @@
-# 아이디어 : 1. 리스트 오름차순 정렬하기
-#           2. start, end를 0, n - 1로 설정
-#           3. 합이 x보다 작다면 start += 1
-#              합이 x보다 크거나 같다면 end -= 1
-# 알고리즘 : 투 포인터
+# 아이디어 : 1. 오름차순 정렬
+#           2. start를 증가시키면 두 수의 합 무조건 증가
+#              end를 감소시키면 두 수의 합 무조건 감소
+# 알고리즘 : sort, two pointer
 
 import sys
 input = sys.stdin.readline
@@ -11,7 +10,8 @@ n = int(input())
 data = list(map(int, input().split()))
 x = int(input())
 
-data.sort() # 오름차순 정렬
+# 오름차순 정렬
+data.sort()
 
 start, end = 0, n - 1
 result = 0
@@ -21,7 +21,7 @@ while start < end :
     
     if hap == x :
         result += 1
-        end -= 1
+        start += 1
     elif hap < x :
         start += 1
     else :
