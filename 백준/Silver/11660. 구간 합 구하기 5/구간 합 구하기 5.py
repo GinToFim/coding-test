@@ -1,24 +1,23 @@
-# 아이디어
-# 알고리즘 : 2D prefix sum
+# 아이디어 : 1. 2차원 누적합 초기화(행열을 하나씩 추가)
+#            2. 누적합 구하기
+# 알고리즘 : prefix_sum
 
 import sys
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
-data = [list(map(int, input().split()))
-           for _ in range(n)]
+graph = [list(map(int, input().split())) for _ in range(n)]
 
-dp = [[0 for _ in range(n + 1)]
-         for _ in range(n + 1)]
+# 2차원 누적합 초기화
+dp = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
 
 # 2차원 누적합 구하기
-for i in range(1, n + 1):
-    for j in range(1, n + 1):
-        dp[i][j] = dp[i][j-1] + dp[i-1][j] - dp[i-1][j-1] + data[i-1][j-1]
-
-# 2차원 부분 누적합 구하기
+for i in range(1, n + 1) :
+    for j in range(1, n + 1) :
+        dp[i][j] = dp[i][j-1] + dp[i-1][j] - dp[i-1][j-1] + graph[i-1][j-1]
+        
+# 2차원 부분합 구하기
 for _ in range(m):
     x1, y1, x2, y2 = map(int, input().split())
-    
     result = dp[x2][y2] - dp[x2][y1-1] - dp[x1-1][y2] + dp[x1-1][y1-1]
     print(result)
