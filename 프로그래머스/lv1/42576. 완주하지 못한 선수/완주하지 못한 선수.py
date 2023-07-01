@@ -1,16 +1,16 @@
-# SUM hash
-# hash 함수를 이용하여 sum_hash로 participant를 모두 더하고
-# completion를 모두 빼고 남은 값이 정답
+# 아이디어 : hash
+# 알고리즘 : hash 
+# 자료구조 : dictionary
 
 def solution(participant, completion):
-    sum_hash = 0
     hash_dict = dict()
+    sum_hash = 0
     
-    for part in participant :
-        hash_dict[hash(part)] = part
-        sum_hash += hash(part)
+    for p in participant :
+        sum_hash += hash(p)
+        hash_dict[hash(p)] = p
         
-    for com in completion :
-        sum_hash -= hash(com)
+    for c in completion :
+        sum_hash -= hash(c)
     
     return hash_dict[sum_hash]
