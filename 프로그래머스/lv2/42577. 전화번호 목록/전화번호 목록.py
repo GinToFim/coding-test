@@ -1,18 +1,8 @@
 def solution(phone_book):
-    # hash 테이블 생성
-    hash_map = dict()
-    
-    # phone_book에 들어있는 모든 요소 담기
-    for phone_num in phone_book :
-        hash_map[phone_num] = 1
-    
-    # 접두어 찾기
-    for phone_num in phone_book :
-        prefix = ''
-        for num in phone_num :
-            prefix += num
-            # 접두어가 hash_map에 존재하는데, 접두어와 기존 번호와 같을 경우는 제외
-            if prefix in hash_map and prefix != phone_num :
-                return False
-    
+    phone_book=sorted(phone_book) #String이므로 사전순으로 정렬된다.
+    for i in range(len(phone_book)-1): #인덱스로 반복문 돌리기 맨마지막 요소는 제외 
+        str = phone_book[i]
+        if(str==phone_book[i+1][:len(str)]): #앞서 맨 마지막 인덱스 제외 안 하면 여기서 오류 걸림 
+             return False
+
     return True
