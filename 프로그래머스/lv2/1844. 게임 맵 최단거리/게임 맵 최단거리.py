@@ -1,5 +1,5 @@
-# 아이디어 : 0은 벽이 있는 자리, 1은 벽이 없는 자리를 나타냄
-# 알고리즘 : bfs(graph, dx/dy)
+# 아이디어 : 1. 행과 열 크기 및 상하좌우 선언
+# 알고리즘 : bfs
 # 자료구조 : queue(deque)
 
 from collections import deque
@@ -9,11 +9,11 @@ def solution(maps):
     n = len(maps)
     m = len(maps[0])
     
-    # 상하좌우 정의
+    # 상하좌우
     dx = [-1, 1, 0, 0]
     dy = [0, 0, -1, 1]
     
-    # 시작노드 및 큐 정의
+    # 큐 및 시작노드 정의
     queue = deque()
     queue.append((0, 0))
     
@@ -25,16 +25,16 @@ def solution(maps):
             nx = x + dx[i]
             ny = y + dy[i]
             
-            # 범위 밖이라면 무시
-            if nx < 0 or ny < 0 or nx >= n or ny >= m :
+            # 범위를 벗어나면 무시
+            if nx < 0 or nx >= n or ny < 0 or ny >= m :
                 continue
-            
-            # 지나갈 수 있다면 (1)
+                
+            # 미로가 이동이 가능하다면
             if maps[nx][ny] == 1 :
                 maps[nx][ny] = maps[x][y] + 1
                 queue.append((nx, ny))
     
     if maps[n-1][m-1] == 1 :
-        return -1  
+        return -1
     else :
-        return maps[n-1][m-1]
+        return maps[n-1][m-1] 
