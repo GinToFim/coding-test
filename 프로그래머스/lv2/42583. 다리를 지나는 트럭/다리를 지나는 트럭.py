@@ -1,5 +1,6 @@
-# 아이디어 : 
-# 알고리즘 
+# 아이디어 : 1. second, bridge : 큐 사용
+#            2. bridge의 합과 truck_weights[0] 이 제한 무게보다 작으면
+#            3. second와 bridge 원소 추가
 # 자료구조 : queue(deque)
 
 from collections import deque
