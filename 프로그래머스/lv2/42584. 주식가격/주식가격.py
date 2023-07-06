@@ -1,24 +1,25 @@
-# 아이디어 : 
-# 알고리즘 :
-# 자료구조 : 
 
-from collections import deque
-
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
 def solution(prices):
-    answer = []
-    prices = deque(prices)
-    
-    while prices:
-        now = prices.popleft()
-        cnt = 0
-        
-        for price in prices:
-            if now > price :
-                # 1초간 본인도 포함
-                cnt += 1
-                break
-            cnt += 1
-            
-        answer.append(cnt)
-
+    stack = []
+    answer = [0] * len(prices)
+    for i in range(len(prices)):
+        if stack != []:
+            while stack != [] and stack[-1][1] > prices[i]:
+                past, _ = stack.pop()
+                answer[past] = i - past
+        stack.append([i, prices[i]])
+    for i, s in stack:
+        answer[i] = len(prices) - 1 - i
     return answer
