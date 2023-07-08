@@ -1,25 +1,28 @@
+# 아이디어 : 1. prices를 queue로 변경
+#           2. prices를 탐색하면서 
+#               현재 가격보다 높거나 같으면 +1
+#               현재 가격보다 낮으면 break하고 answer에 추가
+# 알고리즘 : brute force
+# 자료구조 : queue(deque)
 
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
+from collections import deque
+
 def solution(prices):
-    stack = []
-    answer = [0] * len(prices)
-    for i in range(len(prices)):
-        if stack != []:
-            while stack != [] and stack[-1][1] > prices[i]:
-                past, _ = stack.pop()
-                answer[past] = i - past
-        stack.append([i, prices[i]])
-    for i, s in stack:
-        answer[i] = len(prices) - 1 - i
+    answer = []
+    prices = deque(prices) # 큐 선언
+    
+    # 큐가 빌 때까지
+    while prices :
+        cnt = 0
+        now = prices.popleft()
+        
+        for x in prices :
+            cnt += 1
+            if x < now :
+                break
+        
+        answer.append(cnt)
+                
+        
+    
     return answer
