@@ -1,6 +1,6 @@
-# 아이디어
-# 알고리즘 : tree
-# 자료구조 : dictionary
+# 아이디어: 1. dict[root] = [left, right]
+# 알고리즘: 트리
+# 자료구조: dict, list
 
 import sys
 input = sys.stdin.readline
@@ -12,30 +12,33 @@ for _ in range(n):
     root, left, right = input().split()
     tree[root] = [left, right]
     
-# 전위 순회
+# 전위 순회 정의
 def preorder(root):
+    # 현재 노드가 null이 아니라면
     if root != '.':
-        print(root, end='') # root
-        preorder(tree[root][0]) # left
-        preorder(tree[root][1]) # right
-
-# 중위 순회
+        print(root, end='')
+        preorder(tree[root][0])
+        preorder(tree[root][1])
+        
+# 중위 순회 정의
 def inorder(root):
+    # 현재 노드가 null이 아니라면
     if root != '.':
-        inorder(tree[root][0]) # left
-        print(root, end='') # root
-        inorder(tree[root][1]) # right
+        inorder(tree[root][0])
+        print(root, end='')
+        inorder(tree[root][1])
         
-# 후위 순회
+# 후위 순회 정의
 def postorder(root):
+    # 현재 노드가 null이 아니라면
     if root != '.':
-        postorder(tree[root][0]) # left
-        postorder(tree[root][1]) # right
-        print(root, end='') # root
+        postorder(tree[root][0])
+        postorder(tree[root][1])
+        print(root, end='')
         
-preorder('A') # 전위 순회 실행
+preorder("A")
 print()
-inorder('A') # 중위 순회 실행
+inorder("A")
 print()
-postorder('A') # 후위 순회 실행
+postorder("A")
 print()
