@@ -1,36 +1,32 @@
-# 아이디어: 1. 현재 위치와 다음 위치와 색깔이 다르다면 종이를 4칸으로 쪼개기
-# 알고리즘: 분할정복
+# 아이디어: 1. 같은 구역내에 색깔이 다르다면 그 구역을 4구역으로 나누기 
+# 알고리즘: 분할 정복
 
 import sys
 input = sys.stdin.readline
 
 def cut(x, y, n):
-    # 현재 위치 색깔 기억
-    color = board[x][y]
-    
+    color = graph[x][y]
     for i in range(x, x + n):
         for j in range(y, y + n):
             # 색깔이 다르다면
-            if color != board[i][j]:
-                # 종이를 4구역으로 쪼개기
-                cut(x, y, n // 2)
-                cut(x, y + n // 2, n // 2)
-                cut(x + n // 2, y, n // 2)
-                cut(x + n // 2, y + n // 2, n // 2)
-                return
+            if color != graph[i][j]:
+                # 4개의 구역으로 나누기
+                cut(x, y, n//2)
+                cut(x, y + n//2, n//2)
+                cut(x + n//2, y, n//2)
+                cut(x + n//2, y + n//2, n//2)
+                return # 색깔이 다르다면 구역을 나누고 종료
     
-    if color == 0:
-        result.append(0)
-    else:
-        result.append(1)
-        
+    # 같은 구역 내에 색깔이 모두 같다면
+    result.append(color)
 
 n = int(input())
-board = [list(map(int, input().split())) for _ in range(n)]
+graph = [list(map(int, input().split())) for _ in range(n)]
 
-result = [] # 색깔 기억
-
+result = []
 cut(0, 0, n)
 
+# 하얀색(0) 출력
 print(result.count(0))
+# 파란색(1) 출력
 print(result.count(1))
