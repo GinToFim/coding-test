@@ -1,46 +1,42 @@
-# 아이디어: 1. 원형 형태를 2배로 하여 일자 형태로 바꾸기
-#          2. dist 테이블에 대한 경우의 수를 순열로 따지기
-#          3. 0 ~ (dist 길이 - 1)을 시작점으로 설정
-#          4. 
-# 알고리즘: 완전 탐색, 순열
+# 아이디어: 1. 최소 투입하는 인원 구하기 -> dist 순열 경우의 수 구하기
+#          2. 시계, 반시계 원형 판단은 weak 테이블 2배로 늘리기
+#          3. 
+# 알고리즘: 구현, 순열
 
 from itertools import permutations
 
 def solution(n, weak, dist):
-    # 취약 지점의 길이를 2배로 늘려서 '일자' 형태로 변경
+    # weak의 길이
     weak_length = len(weak)
     
+    # weak 테이블을 2배로 늘리기
     for i in range(weak_length):
         weak.append(weak[i] + n)
     
-    # 투입할 최대 친구 수보다 많게 초기화(최소값을 찾아야 되므로)
+    # 최대 투입인원 수보다 더 많게 초기화(최솟값 탐색을 위해)
     answer = len(dist) + 1
     
-    # 커버 가능한 친구들에 거리를 순열
-    for friends in permutations(dist, len(dist)): 
-        # 0 ~ (length + 1)까지의 위치를 각각 시작점으로 설정
+    for friends in permutations(dist, len(dist)):
         for start in range(weak_length):
-            count = 1 # 투입할 친구의 수
+            count = 1 # 현재 투입되는 인원
+            last_pos = weak[start] + friends[count-1] # 현재 인원이 커버 가능한 위치
             
-            # 처음 친구가 커버 가능한 마지막 위치
-            position = weak[start] + friends[count - 1]
-            
-            # 시작점부터 마지막까지 모든 취약 지점 확인
-            for idx in range(start, start + weak_length):
-                # 현재 친구가 점검할 수 있는 위치를 벗어나는 경우
-                if position < weak[idx]:
-                    count += 1 # 새로운 친구 투입
+            for idx in range(start+1, start + weak_length):
+                # 다음 위치를 커버하지 못한다면
+                if weak[idx] > last_pos:
+                    count += 1 # 인원 늘리기
                     
-                    # 새로운 친구를 더 투입할 수 없다면
+                    # 투입된 인원이 가능한 인원보다 많다면
                     if count > len(dist):
                         break
                     
-                    # 다음 위치부터 커버 가능한 위치
-                    position = weak[idx] + friends[count - 1]
-                    
+                    # 다음 위치부터 커버 가능한 위치까지를 구하기
+                    last_pos = weak[idx] + friends[count-1]
+            
+            # 최솟값 갱신하기
             answer = min(answer, count)
     
-    # 취약 지점을 점검할 수 없다면
+    # 만약 전부 투입해도 불가능하다면
     if answer > len(dist):
         return -1
     
