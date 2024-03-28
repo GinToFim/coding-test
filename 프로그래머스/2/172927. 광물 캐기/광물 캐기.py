@@ -9,7 +9,7 @@ def solution(picks, minerals):
         minerals = minerals[:num_min]
         
     # 광물 조사
-    cnt_min = [[0, 0, 0]for x in range(10)] # dia, iron, stone
+    cnt_min = [[0, 0, 0] for x in range(num_min // 5)] # dia, iron, stone
     for i in range(len(minerals)):
         if minerals[i] == 'diamond': 
             cnt_min[i//5][0] += 1
@@ -26,6 +26,7 @@ def solution(picks, minerals):
     for mineral in sorted_cnt_min:
         d, i, s = mineral
         for p in range(len(picks)):
+            print(p, d, i, s)
             if p == 0 and picks[p]>0: # dia 곡괭이
                 picks[p]-=1
                 answer += d + i + s
