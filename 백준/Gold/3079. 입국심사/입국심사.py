@@ -1,30 +1,22 @@
-# 아이디어 :
-# 알고리즘 : binary search
+# 아이디어: 이 정도 시간이면 충분히 처리 가능한가? O, X
+# 알고리즘: 이진 탐색, 파라메트릭
 
 import sys
 input = sys.stdin.readline
 
 n, m = map(int, input().split())
-data = []
+data = [int(input()) for _ in range(n)]
 
-for _ in range(n) :
-    data.append(int(input()))
-    
 start, end = 0, max(data) * m
-result = end
 
-while start <= end :
+while start <= end:
     mid = (start + end) // 2
-    
-    total = 0 # 입국심사를 완료한 인원
-    
-    for x in data :
-        total += mid // x
-        
-    if total >= m :
-        result = min(result, mid)
+    total = sum(mid // x for x in data)
+    # 이 정도 시간이면 충분하다면
+    if total >= m:
+        result = mid
         end = mid - 1
-    else :
+    else:
         start = mid + 1
         
 print(result)
