@@ -1,46 +1,63 @@
+# 아이디어 : 1. graph, distance, heap 정의
+#            2. 양방향성
+#            3. (1 -> u -> v -> n) or (1 -> v -> u -> n) 둘 중에 하나가 최소
+# 알고리즘 : dijkstra
+# 자료구조 : heapq
+
 import heapq
 import sys
 input = sys.stdin.readline
 INF = int(1e9)
 
-# 정점, 간선 입력
-n, e = map(int, input().split())
-graph = [[] for i in range(n+1)]
+n, m = map(int, input().split())
 
-# 간선 정보 입력
-for _ in range(e) :
-	a, b, c = map(int, input().split())
-	# 양방향
-	graph[a].append((b, c))
-	graph[b].append((a, c))
+# 그래프 정의
+graph = [[] for _ in range(n + 1)]
+for _ in range(m):
+    a, b, c = map(int, input().split())
+    graph[a].append((b, c))
+    graph[b].append((a, c))
+    
 
-# 두 정점 입력
-v1, v2 = map(int, input().split())
 
-def dijkstra(start, end) :
-	# 거리 재정의
-	distance = [INF] * (n + 1)
-	# 시작노드 & heapq 정의
-	hq = []
-	heapq.heappush(hq, (0, start))
-	distance[start] = 0
+u, v = map(int, input().split())
 
-	while hq :
-		dist, now = heapq.heappop(hq)
-		# 이미 처리된 적이 있으면 무시
-		if distance[now] < dist :
-			continue
+def dijkstra(start):
+    # 거리 테이블 정의
+    distance = [INF for _ in range(n + 1)]
+    
+    # 힙큐 및 시작노드 정의
+    hq = []
+    heapq.heappush(hq, (0, start)) # (거리, 노드)순으로 저장
+    distance[start] = 0
+    
+    # 힙큐가 빌 때까지
+    while hq:
+        dist, now = heapq.heappop(hq)
+        
+        # 이미 처리된 적이 있다면
+        if distance[now] < dist:
+            continue
+            
+        for v, d in graph[now]:
+            cost = dist + d
+            # 기존 거리보다 갱신 거리가 크다면
+            if distance[v] > cost:
+                distance[v] = cost
+                heapq.heappush(hq, (cost, v))
+                
+    return distance
 
-		for v in graph[now] :
-			cost = dist + v[1]
-			if cost < distance[v[0]] :
-				distance[v[0]] = cost
-				heapq.heappush(hq, (cost,v[0]))
+dist_1 = dijkstra(1)
+dist_u = dijkstra(u)
+dist_v = dijkstra(v)
+                
+path1 = dist_1[u] + dist_u[v] + dist_v[n]
+path2 = dist_1[v] + dist_v[u] + dist_u[n]
 
-	return distance[end]
+result = min(path1, path2)
 
-value1 = dijkstra(1, v1) + dijkstra(v1, v2) + dijkstra(v2, n)
-value2 = dijkstra(1, v2) + dijkstra(v2, v1) + dijkstra(v1, n)
-
-result = min(value1, value2)
-print(result if result < INF else -1)
+if result >= INF:
+    print(-1)
+else :
+    print(result)
