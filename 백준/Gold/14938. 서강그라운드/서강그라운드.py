@@ -1,42 +1,36 @@
-# 아이디어 : 1. 양방향
-#           2. 전체 노드를 뒤지는데 수색범위가 가능하면 아이템 갖기
-#           3. 전체 노드에서 떨어지는데 그 중에서 최대 아이템 갖는 것 max 찾기
-# 알고리즘 : 플로이드-워셜 (O(n^3) = 1000,000), 브루트 포스
+# 아이디어: 1. 인접행렬, INF, 3중 루프 - K, 양방향
+# 알고리즘: 플로이드-와샬, DP
+#           O(N^3) = 10^6 -> 가능
 
 import sys
 input = sys.stdin.readline
-INF = 10 ** 9
+INF = int(1e9)
 
 n, m, r = map(int, input().split())
-items = list(map(int, input().split()))
+data = list(map(int, input().split()))
+# data = [0] + data
 
-graph = [[INF] * (n + 1) for _ in range(n + 1)]
+graph = [[INF for _ in range(n+1)] for _ in range(n + 1)]
 
-for _ in range(r) : 
-    a, b, l = map(int, input().split())
-    # 양방향
-    graph[a][b] = l
-    graph[b][a] = l
-    
-# 주대각선 0으로
-for x in range(1, n + 1) :
-    graph[x][x] = 0
-    
-# 플로이드-워셜 수행
-for k in range(1, n + 1) :
-    for x in range(1, n + 1) :
-        for y in range(1, n + 1) :
-            graph[x][y] = min(graph[x][y], graph[x][k] + graph[k][y])
+for _ in range(r):
+    a, b, c = map(int, input().split())
+    graph[a][b] = c
+    graph[b][a] = c
 
-result = 0
+# 주대각선은 0으로
+for a in range(1, n + 1):
+    graph[a][a] = 0
 
-for i in range(1, n + 1) :
-    cnt = 0 # 현재 아이템 개수
-    for j in range(1, n + 1) :
-        # 수색이 가능하다면
-        if graph[i][j] <= m :
-            cnt += items[j-1]
-            
-    result = max(result, cnt)
+# 플로이드 와샬 알고리즘 수행
+for k in range(1, n + 1):
+    for a in range(1, n + 1):
+        for b in range(1, n + 1):
+            graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b])
+
+result = -1
+
+for row in graph[1:]:
+    value = sum(x for x, d in zip(data, row[1:]) if d <= m)
+    result = max(result, value)
 
 print(result)
