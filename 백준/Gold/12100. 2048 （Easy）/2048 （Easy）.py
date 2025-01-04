@@ -11,8 +11,8 @@ def move(graph, step):
         for i in range(n):
             pointer = 0
             for j in range(1, n):
-                # 현재 위치가 빈칸이 아니라면
-                if graph[i][j] > 0:
+                # 현재 위치가 0이 아니라면
+                if graph[i][j] != 0:
                     now = graph[i][j] # 현재 위치
                     graph[i][j] = 0
 
@@ -22,7 +22,7 @@ def move(graph, step):
                     # 포인터가 가리키는 수가 현재 위치와 같을 때
                     elif graph[i][pointer] == now :
                         graph[i][pointer] *= 2
-                        pointer += 1
+                        pointer += 1 # 포인터도 다음 칸으로 넘김
                     # 포인터가 가리키는 수가 다를 때
                     else :
                         pointer += 1 # 포인터를 다음 칸으로 넘김
@@ -33,7 +33,7 @@ def move(graph, step):
         for i in range(n):
             pointer = n - 1
             for j in range(n-2, -1, -1):
-                if graph[i][j] > 0 :
+                if graph[i][j] != 0 :
                     now = graph[i][j]
                     graph[i][j] = 0
                     
@@ -51,17 +51,14 @@ def move(graph, step):
         for j in range(n):
             pointer = 0
             for i in range(1, n):
-                if graph[i][j]:
+                if graph[i][j] != 0:
                     tmp = graph[i][j]
                     graph[i][j] = 0
-                    # 포인터가 가리키는 수가 0일 때
                     if graph[pointer][j] == 0:
                         graph[pointer][j] = tmp
-                    # 포인터가 가리키는 수와 현재 위치의 수가 같을 때
                     elif graph[pointer][j]  == tmp:
                         graph[pointer][j] *= 2
                         pointer += 1
-                    # 포인터가 가리키는 수와 현재 위치의 수가 다를 때
                     else:
                         pointer += 1
                         graph[pointer][j] = tmp
@@ -71,7 +68,7 @@ def move(graph, step):
         for j in range(n):
             pointer = n-1
             for i in range(n-2, -1, -1):
-                if graph[i][j] > 0 :
+                if graph[i][j] != 0 :
                     now = graph[i][j]
                     graph[i][j] = 0
                     
