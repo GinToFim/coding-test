@@ -1,26 +1,18 @@
-# 아이디어 : 
-# 알고리즘 : dp
-
-import sys
-input = sys.stdin.readline
-
 n = int(input())
-times = []
-prices = []
 
-for _ in range(n):
-    t, p = map(int, input().split())
-    times.append(t)
-    prices.append(p)
+schedule = [list(map(int, input().split()))
+            for _ in range(n)]
+
+dp = [0] * (n + 1)
+
+for i in range(n):
+    term = schedule[i][0]
+    price = schedule[i][1]
+
     
-dp = [0 for _ in range(n + 1)]
+    for j in range(i + term, n + 1):
+        # i번째 날짜에 일하는게 이득이라면
+        if dp[j] < dp[i] + price:
+            dp[j] = dp[i] + price
 
-for i in range(n-1, -1, -1):
-    # 상담진행이 가능하다면
-    if i + times[i] <= n :
-        dp[i] = max(prices[i] + dp[i + times[i]], dp[i+1])
-    # 상담진행이 불가능하다면
-    else :
-        dp[i] = dp[i+1]
-        
-print(dp[0])
+print(dp[n])
