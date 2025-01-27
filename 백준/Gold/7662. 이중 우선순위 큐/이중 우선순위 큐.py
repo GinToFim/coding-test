@@ -7,44 +7,49 @@ T = int(input())
 for _ in range(T):
     k = int(input())
 
-    visited = [False] * k
-    max_hq = []
     min_hq = []
+    max_hq = []
+    num_dict = {}
 
-    for i in range(k):
+    for _ in range(k):
         op, num = input().split()
         num = int(num)
 
+        # 삽입이라면
         if op == 'I':
-            heapq.heappush(max_hq, (-num, i)) # 최대힙 삽입
-            heapq.heappush(min_hq, (num, i)) # 최대힙 삽입
-            visited[i] = True
-        elif num == -1: # 최소 힙 삭제
-            # 최소 힙에 원소가 있으면서 맨 앞이 이미 없다면
-            while min_hq and not visited[min_hq[0][1]]:
+            # 이미 딕셔너리에 있다면
+            if num in num_dict:
+                num_dict[num] += 1
+            else: # 처음이라면
+                num_dict[num] = 1
+            heapq.heappush(min_hq, num)
+            heapq.heappush(max_hq, -num)
+        # 최소 힙 삭제라면
+        elif num == -1: 
+            # 최소 힙에 원소가 있으면서, 이미 삭제했다면
+            while min_hq and num_dict[min_hq[0]] < 1:
                 heapq.heappop(min_hq)
-            # 최소 힙에 원소가 있다면
-            if min_hq:
-                visited[min_hq[0][1]] = False
-                heapq.heappop(min_hq)
-        else: # 최대 힙 삭제
-            # 최대 힙에 원소가 있으면서 맨 앞이 이미 없다면
-            while max_hq and not visited[max_hq[0][1]]:
-                heapq.heappop(max_hq)
-            # 최대 힙에 원소가 있다면
-            if max_hq:
-                visited[max_hq[0][1]] = False
-                heapq.heappop(max_hq)
 
+            if min_hq:
+                min_val = heapq.heappop(min_hq)
+                num_dict[min_val] -= 1
+        # 최대 힙 삭제라면
+        else:
+            # 최대 힙에 원소가 있으면서, 이미 삭제했다면
+            while max_hq and num_dict[-max_hq[0]] < 1:
+                heapq.heappop(max_hq)
+            if max_hq:
+                max_val = -heapq.heappop(max_hq)
+                num_dict[max_val] -= 1
 
     # 마지막에 최소 힙, 최대 힙 나머지 삭제
-    while min_hq and not visited[min_hq[0][1]]:
+    while min_hq and num_dict[min_hq[0]] < 1:
         heapq.heappop(min_hq)
-    while max_hq and not visited[max_hq[0][1]]:
+    while max_hq and num_dict[-max_hq[0]] < 1:
         heapq.heappop(max_hq)
 
-    # 원소가 있다면
-    if min_hq and max_hq:
-        print(-max_hq[0][0], min_hq[0][0])
+    # 힙큐에 원소가 있다면
+    if max_hq and min_hq:
+        print(-max_hq[0], min_hq[0])
     else:
         print("EMPTY")
