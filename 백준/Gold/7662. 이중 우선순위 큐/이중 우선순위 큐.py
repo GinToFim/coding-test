@@ -1,3 +1,4 @@
+from collections import defaultdict
 import heapq
 import sys
 input = sys.stdin.readline
@@ -9,7 +10,7 @@ for _ in range(T):
 
     min_hq = []
     max_hq = []
-    num_dict = {}
+    num_dict = defaultdict(int)
 
     for _ in range(k):
         op, num = input().split()
@@ -17,11 +18,7 @@ for _ in range(T):
 
         # 삽입이라면
         if op == 'I':
-            # 이미 딕셔너리에 있다면
-            if num in num_dict:
-                num_dict[num] += 1
-            else: # 처음이라면
-                num_dict[num] = 1
+            num_dict[num] += 1
             heapq.heappush(min_hq, num)
             heapq.heappush(max_hq, -num)
         # 최소 힙 삭제라면
