@@ -1,5 +1,3 @@
-# 아이디어:
-# 알고리즘: 구현, 시물레이션
 
 import sys
 input = sys.stdin.readline
@@ -14,15 +12,10 @@ visited = [[False] * m for _ in range(n)]
 dx = [-1, 0, 1, 0]
 dy = [0, 1, 0, -1]
 
-result = 0
+result = 1
+visited[x][y] = True
 
 while True:
-    # 현재 위치를 한 번도 방문한 적이 없다면
-    if not visited[x][y]:
-        # 현재 위치 방문 처리
-        visited[x][y] = True
-        result += 1
-
     # 다음 칸 탐색하기
     for _ in range(4):
         d = (d-1) % 4
@@ -37,6 +30,8 @@ while True:
         # 방문한 적이 없으면서, 갈 수 있는 곳이라면
         if not visited[nx][ny] and graph[nx][ny] == 0:
             x, y = nx, ny
+            visited[x][y] = True
+            result += 1
             break
 
     # 다음 위치로 갈 곳이 없다면
@@ -49,5 +44,6 @@ while True:
         if 0 <= nx < n and 0 <= ny < m and graph[nx][ny] == 0:
             x, y = nx, ny
         else:
-            print(result)
             break
+
+print(result)
