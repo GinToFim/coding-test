@@ -1,41 +1,39 @@
-# 아이디어 : 1. nCn/2로 스타트 팀과 링크 팀으로 나누기
-#           2. 각각 팀의 능력치의 합들의 차를 구하기
-# 알고리즘 : 20C10 = 184756
+N = int(input()) # 전체 인원
 
-from itertools import combinations
-import sys
-input = sys.stdin.readline
-
-n = int(input())
-data = []
-
-all_team = [x for x in range(1, n + 1)]
-result = 10 ** 9
-
-for _ in range(n) :
-    data.append(list(map(int, input().split())))
-
-for start_team in combinations(all_team, n//2) :    
-    link_team = tuple(set(all_team) - set(start_team))
+status = [list(map(int,input().split())) for _ in range(N)] # 능력치
+ 
+visited = [False] * N
+result = int(1e9)# 결과 큰 수로 초기화
+ 
+def dfs(a, idx):
+    global result
     
-    start_stat = 0
-    for teams in combinations(start_team, 2) :
-        i, j = teams
-        i -= 1
-        j -= 1
+    if a == N//2: # 반반으로 나뉘었을 경우
+    	
+        # 각 팀의 능력치 초기화
+        team_start = 0
+        team_link = 0
         
-        start_stat += data[i][j]
-        start_stat += data[j][i]
-            
-    link_stat = 0
-    for teams in combinations(link_team, 2) :
-        i, j = teams
-        i -= 1
-        j -= 1
+        for i in range (N):
+            for j in range (N):
+            	
+                # 방문한 반을 start 팀으로 배정
+                if visited[i] and visited[j]: 
+                    team_start += status[i][j]
+                    
+                # 방문하지 않은 반을 link 팀으로 배정
+                elif not visited[i] and not visited[j]: 
+                    team_link += status[i][j]
         
-        link_stat += data[i][j]
-        link_stat += data[j][i]
-
-    result = min(result, abs(start_stat-link_stat))
-    
+        result = min(result, abs(team_start-team_link))
+        return
+        
+    else: # 인원 나누기
+        for i in range(idx, N):
+            if not visited[i]:
+                visited[i] = True
+                dfs(a+1, i+1)
+                visited[i] = False
+ 
+dfs(0,0)
 print(result)
